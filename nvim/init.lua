@@ -530,3 +530,4 @@ vim.opt.relativenumber = true
 
 -- Highlight cursor line
 vim.opt.cursorline = true
+

@@ -39,30 +39,53 @@ return {
         'rstacruz/vim-closer' -- Vim bracket closer on enter
     },
     {
-        'codota/tabnine-nvim', -- Tabnine autocomplete
-        build = "./dl_binaries.sh",
-        config = function()
-            require('tabnine.status').status()
-            require('tabnine').setup({
-                disable_auto_comment=true,
-                accept_keymap="<Tab>",
-                dismiss_keymap = "<C-]>",
-                debounce_ms = 800,
-                suggestion_color = {gui = "#808080", cterm = 244},
-                exclude_filetypes = {"TelescopePrompt"},
-                log_file_path = nil, -- absolute path to Tabnine log file
-            })
-            require('lualine').setup({
-                tabline = {
-                    lualine_a = {},
-                    lualine_b = {'branch'},
-                    lualine_c = {'filename'},
-                    lualine_x = {},
-                    lualine_y = {},
-                    lualine_z = {}
-                },
-                sections = {lualine_c = {'lsp_progress'}, lualine_x = {'tabnine'}}
-            })
+        "lervag/vimtex" --VimTeX
+    },
+    {
+        'edKotinsky/Arduino.nvim' -- Arduino LSP
+    },
+    {
+        'phaazon/hop.nvim', -- motions
+        branch = 'v2',
+        config = function ()
+            require'hop'.setup ()
+            local hop = require('hop')
+            local directions = require('hop.hint').HintDirection
+            vim.keymap.set('', 'f', function()
+              hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true })
+            end, {remap=true})
+            vim.keymap.set('', 'F', function()
+              hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true })
+            end, {remap=true})
+            vim.keymap.set('', 't', function()
+              hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
+            end, {remap=true})
+            vim.keymap.set('', 'T', function()
+              hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
+            end, {remap=true})
         end
+    },
+    { -- This plugin
+      "Zeioth/compiler.nvim",
+      cmd = {"CompilerOpen", "CompilerToggleResults", "CompilerRedo"},
+      dependencies = { "stevearc/overseer.nvim" },
+      opts = {},
+    },
+    { -- The task runner we use
+      "stevearc/overseer.nvim",
+      commit = "19aac0426710c8fc0510e54b7a6466a03a1a7377",
+      cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+      opts = {
+        task_list = {
+          direction = "bottom",
+          min_height = 25,
+          max_height = 25,
+          default_detail = 1,
+          bindings = { ["q"] = function() vim.cmd("OverseerClose") end },
+        },
+      },
+    },
+    {
+       'mhartington/formatter.nvim'
     },
 }
